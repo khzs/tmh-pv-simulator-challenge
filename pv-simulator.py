@@ -1,13 +1,8 @@
-from time import strftime, gmtime
 from commonpvs import connection, channel, QUEUE_NAME
 
 
-def alfaromeo(timestamp):
-    return strftime("%H:%M:%S", gmtime(timestamp))
-
-
 def process_data(chan, method, properties, body):
-    print(alfaromeo(int(body)))
+    print(str(body))
 
 
 if __name__ == '__main__':
