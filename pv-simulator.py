@@ -1,8 +1,8 @@
+from csv import writer
 from random import uniform
 from scipy.interpolate import InterpolatedUnivariateSpline
 
 from commonpvs import connection, channel, QUEUE_NAME
-
 
 graph_points = [(0, 0),
                 (1, 0),
@@ -32,12 +32,22 @@ def simulator(timestamp):
     return round(max(0, reading + noise), 2)
 
 def process_data(chan, method, properties, body):
-    timestamp, formatted_time, meter_value = str(body)[2:-1].split(",")
+    timestamp, formatted_time, meter_value = str(body)[2:-1].split(',')  # [2:-1] selects b'<.....>'
+    meter_value = float(meter_value)
     pvs_value = simulator(timestamp)
     print(timestamp, formatted_time, meter_value, pvs_value)
+    with open('output.csv', 'a') as file:
+        wr = writer(file, delimiter = ',')
+        wr.writerow([timestamp, formatted_time, meter_value, pvs_value, (meter_value + pvs_value),
+                     (meter_value - pvs_value)])
 
 
 if __name__ == '__main__':
+    with open('output.csv', 'w') as file:
+        wr = writer(file)
+        wr.writerow(['Timestamp', 'Formatted Time', 'Meter Consumption (W)', 'PV Simulator output (W)', 'Sum (W)',
+                     'Diff (W)'])
+
     channel.basic_consume(queue = QUEUE_NAME,
                           on_message_callback = process_data)
     try:
