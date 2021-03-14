@@ -16,7 +16,7 @@ if __name__ == '__main__':
 
         channel.basic_publish(exchange = '',
                               routing_key = QUEUE_NAME,
-                              body = f'{formatted_time},{consumption}',
+                              body = f'{timestamp},{formatted_time},{consumption}',
                               properties = BasicProperties(delivery_mode = 2))
 
     connection.close()
