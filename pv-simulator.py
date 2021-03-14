@@ -2,7 +2,7 @@ from csv import writer
 from random import uniform
 from scipy.interpolate import InterpolatedUnivariateSpline
 
-from commonpvs import connection, channel, QUEUE_NAME
+from commonpvs import *
 
 graph_points = [(0, 0),
                 (1, 0),
@@ -21,7 +21,7 @@ graph_points = [(0, 0),
                 (24, 0)
                 ]
 
-x = [i[0] * 60 * 60 for i in graph_points]  # time converted from hour to timestamp format
+x = [i[0] * RESOLUTION for i in graph_points]  # time converted from hour to timestamp format
 y = [i[1] * 1000 for i in graph_points]  # power converted from kW to W
 interpolation_function = InterpolatedUnivariateSpline(x, y)
 
@@ -36,7 +36,8 @@ def process_data(chan, method, properties, body):
     timestamp, formatted_time, meter_value = str(body)[2:-1].split(',')  # [2:-1] selects b'<.....>'
     meter_value = float(meter_value)
     pvs_value = simulator(timestamp)
-    print(timestamp, formatted_time, meter_value, pvs_value)
+    if int(timestamp) % RESOLUTION == 0:
+        print(timestamp, formatted_time, meter_value, pvs_value)
     with open('output.csv', 'a') as file:
         wr = writer(file, delimiter = ',')
         wr.writerow([timestamp, formatted_time, meter_value,  # these already come formatted from the queue

@@ -1,5 +1,10 @@
 from pika import BlockingConnection, ConnectionParameters
 
+START_TIME = 0
+RESOLUTION = 60 * 60
+STOP_TIME = 24 * RESOLUTION
+INTERVAL = 5
+
 QUEUE_NAME = 'meter'
 
 connection = BlockingConnection(ConnectionParameters('localhost'))

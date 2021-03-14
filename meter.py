@@ -2,16 +2,14 @@ from pika import BasicProperties
 from random import uniform
 from time import strftime, gmtime
 from tqdm import tqdm
-from commonpvs import connection, channel, QUEUE_NAME
 
+from commonpvs import *
 
 if __name__ == '__main__':
-    START_TIME = 0
-    STOP_TIME = 24 * 60 * 60
-    INTERVAL = 5
 
     for timestamp in tqdm(range(START_TIME, STOP_TIME, INTERVAL), desc= 'Sending meter values'):
-        formatted_time = strftime("%H:%M:%S", gmtime(timestamp))
+        multiplier = (60 * 60) / RESOLUTION  # gmtime() is optimized to 24 * 60 * 60, hence the multiplier
+        formatted_time = strftime("%H:%M:%S", gmtime(timestamp * multiplier))
         consumption = '{:.2f}'.format(uniform(0.0, 9000.0))
 
         channel.basic_publish(exchange = '',
