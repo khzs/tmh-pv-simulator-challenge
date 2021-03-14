@@ -57,7 +57,7 @@ if __name__ == '__main__':
     try:
         channel.start_consuming()
     except KeyboardInterrupt:
-        pass
+        print()
     finally:
         channel.stop_consuming()
         connection.close()
