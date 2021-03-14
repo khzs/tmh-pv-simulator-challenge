@@ -29,7 +29,8 @@ interpolation_function = InterpolatedUnivariateSpline(x, y)
 def simulator(timestamp):
     reading = interpolation_function(int(timestamp))
     noise = uniform(-1, 1) * (reading * 0.05)
-    return round(max(0, reading + noise), 2)
+    return max(0, round(reading + noise, 2))  # cannot generate negative power
+
 
 def process_data(chan, method, properties, body):
     timestamp, formatted_time, meter_value = str(body)[2:-1].split(',')  # [2:-1] selects b'<.....>'
