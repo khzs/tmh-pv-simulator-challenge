@@ -21,7 +21,7 @@ graph_points = [(0, 0),
                 (24, 0)
                 ]
 
-x = [i[0] * RESOLUTION for i in graph_points]  # time converted from hour to timestamp format
+x = [i[0] * resolution for i in graph_points]  # time converted from hour to timestamp format
 y = [i[1] * 1000 for i in graph_points]  # power converted from kW to W
 interpolation_function = InterpolatedUnivariateSpline(x, y)
 
@@ -36,7 +36,7 @@ def process_data(chan, method, properties, body):
     timestamp, formatted_time, meter_value = str(body)[2:-1].split(',')  # [2:-1] selects b'<.....>'
     meter_value = float(meter_value)
     pvs_value = simulator(timestamp)
-    if int(timestamp) % RESOLUTION == 0:
+    if int(timestamp) % resolution == 0:
         print(timestamp, formatted_time, meter_value, pvs_value)
     with open('output.csv', 'a') as file:
         wr = writer(file, delimiter = ',')
@@ -52,7 +52,7 @@ if __name__ == '__main__':
         wr.writerow(['Timestamp', 'Formatted Time', 'Meter Consumption (W)', 'PV Simulator output (W)', 'Sum (W)',
                      'Diff (W)'])
 
-    channel.basic_consume(queue = QUEUE_NAME,
+    channel.basic_consume(queue = queue_name,
                           on_message_callback = process_data)
     try:
         channel.start_consuming()

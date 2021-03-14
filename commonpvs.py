@@ -1,12 +1,12 @@
 from pika import BlockingConnection, ConnectionParameters
 
-START_TIME = 0
-RESOLUTION = 60 * 60
-STOP_TIME = 24 * RESOLUTION
-INTERVAL = 5
+start_time = 0
+resolution = 60 * 60
+stop_time = 24 * resolution
+interval = 5
 
-QUEUE_NAME = 'meter'
+queue_name = 'meter'
 
 connection = BlockingConnection(ConnectionParameters('localhost'))
 channel = connection.channel()
-channel.queue_declare(queue = QUEUE_NAME, auto_delete = True)
+channel.queue_declare(queue = queue_name, auto_delete = True)
