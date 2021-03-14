@@ -21,8 +21,8 @@ graph_points = [(0, 0),
                 (24, 0)
                 ]
 
-x = [i[0] * 60 * 60 for i in graph_points]
-y = [i[1] * 1000 for i in graph_points]
+x = [i[0] * 60 * 60 for i in graph_points]  # time converted from hour to timestamp format
+y = [i[1] * 1000 for i in graph_points]  # power converted from kW to W
 interpolation_function = InterpolatedUnivariateSpline(x, y)
 
 
@@ -38,8 +38,10 @@ def process_data(chan, method, properties, body):
     print(timestamp, formatted_time, meter_value, pvs_value)
     with open('output.csv', 'a') as file:
         wr = writer(file, delimiter = ',')
-        wr.writerow([timestamp, formatted_time, meter_value, pvs_value, (meter_value + pvs_value),
-                     (meter_value - pvs_value)])
+        wr.writerow([timestamp, formatted_time, meter_value,  # these already come formatted from the queue
+                     '{:.2f}'.format(pvs_value),
+                     '{:.2f}'.format(meter_value + pvs_value),
+                     '{:.2f}'.format(meter_value - pvs_value)])
 
 
 if __name__ == '__main__':
@@ -52,6 +54,6 @@ if __name__ == '__main__':
                           on_message_callback = process_data)
     try:
         channel.start_consuming()
-    except KeyboardInterrupt as ex:
+    except KeyboardInterrupt:
         channel.stop_consuming()
         connection.close()
