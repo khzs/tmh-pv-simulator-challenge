@@ -15,6 +15,6 @@ if __name__ == '__main__':
         channel.basic_publish(exchange = '',
                               routing_key = queue_name,
                               body = f'{timestamp},{formatted_time},{consumption}',
-                              properties = BasicProperties(delivery_mode = 2))
+                              properties = BasicProperties(delivery_mode = 2))  # persistent messages
 
     connection.close()

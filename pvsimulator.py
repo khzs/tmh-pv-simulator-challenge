@@ -4,6 +4,7 @@ from scipy.interpolate import InterpolatedUnivariateSpline
 
 from commonpvs import *
 
+# Reading from the graph at ./docs/PV%20Simulator%20Challenge.pdf
 graph_points = [(0, 0),
                 (1, 0),
                 (2, 0),
@@ -50,7 +51,9 @@ if __name__ == '__main__':
 
     with open('output.csv', 'w') as file:
         wr = writer(file)
-        wr.writerow(['Timestamp', 'Formatted Time', 'Meter Consumption (W)', 'PV Simulator output (W)', 'Sum (W)',
+        wr.writerow(['Timestamp', 'Formatted Time', 'Meter Consumption (W)',
+                     'PV Simulator output (W)',
+                     'Sum (W)',
                      'Diff (W)'])
 
     channel.basic_consume(queue = queue_name,
