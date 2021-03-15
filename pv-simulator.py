@@ -26,9 +26,9 @@ y = [i[1] * 1000 for i in graph_points]  # power converted from kW to W
 interpolation_function = InterpolatedUnivariateSpline(x, y)
 
 
-def simulator(timestamp):
+def simulator(timestamp, noise_multiplier=0.05):
     reading = interpolation_function(int(timestamp))
-    noise = uniform(-1, 1) * (reading * 0.05)
+    noise = uniform(-1, 1) * (reading * noise_multiplier)
     return max(0, round(reading + noise, 2))  # cannot generate negative power
 
 
@@ -47,6 +47,7 @@ def process_data(chan, method, properties, body):
 
 
 if __name__ == '__main__':
+
     with open('output.csv', 'w') as file:
         wr = writer(file)
         wr.writerow(['Timestamp', 'Formatted Time', 'Meter Consumption (W)', 'PV Simulator output (W)', 'Sum (W)',
