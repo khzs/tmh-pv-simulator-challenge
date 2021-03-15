@@ -6,9 +6,10 @@ This application generates simulated power values in two parts and uses RabbitMQ
 *  `simulator.py` generates values based on a photovoltaic power curve and combines them with the household values
    received from the RabbitMQ queue
    
-For a more detailed specification see the [original task description](docs/PV Simulator Challenge.pdf).
+For a more detailed specification see the [original task description](./docs/PV%20Simulator%20Challenge.pdf).
 
-> The following instructions for setup and execution are tailored towards systems with apt and bash
+| The following instructions for setup and execution are tailored towards systems with apt and bash |
+| :--- |
 
 ## Dependencies
 
@@ -48,7 +49,7 @@ python3 -m unittest tests/*.py -v
 
 The file is named `output.csv`. The last two columns are :
 * **Sum**: The sum of the household consumption and the PV simulator values as per requested in the 
-  [original task description](docs/PV Simulator Challenge.pdf)
+  [original task description](./docs/PV%20Simulator%20Challenge.pdf)
 * **Diff**: The difference of the household consumption and the PV simulator values shows how much power the household
-  needs to draw from the main power line (if positive) or how much reserve energy is generated from the Photovoltaic
+  needs to draw from the main power line (if positive) or how much reserve energy is generated from the photovoltaic
   module (if negative)
